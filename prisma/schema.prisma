@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id            Int       @id @default(autoincrement())
+  firstname     String    @db.VarChar(30)
+  t_code        String    @db.VarChar(4)
+  password      String    @db.VarChar(72)
+  email         String?   @db.VarChar(99)
+  homeworks     Homework[]
+}
+
+model Subject {
+  id            Int     @id @default(autoincrement())
+  title         String  
+  description   String?
+  homeworks     Homework[]      
+}
+
+model Homework {
+  id            Int       @id @default(autoincrement())
+  subject       Subject   @relation(fields: [subject_id], references: [id])
+  subject_id    Int   
+  question      String    @db.Text
+  startdate     DateTime  @db.Date
+  duedate       DateTime  @db.Date
+  published     Boolean
+  teacher       Teacher   @relation(fields: [teacher_id], references: [id])
+  teacher_id    Int
+  answers       Answer[]
+}
+
+model Answer {
+  id            Int       @id @default(autoincrement())
+  answer_text   String?   @db.Text
+  score         Decimal?  @db.Decimal(3,1)
+  submitted     Boolean   
+  homeworks     Homework  @relation(fields: [homework_id], references: [id])
+  homework_id   Int
+  student       Student   @relation(fields: [student_id], references: [id])
+  student_id    Int
+}
+
+model Student {
+  id            Int       @id @default(autoincrement())
+  firstname     String    @db.VarChar(30)
+  s_code        String    @db.VarChar(4)
+  password      String    @db.VarChar(72)
+  email         String?   @db.VarChar(99) 
+  answers       Answer[] 
+}
