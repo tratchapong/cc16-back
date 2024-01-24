@@ -13,8 +13,20 @@ const teacherData = [
     { firstname: 'Danny',t_code:'t004', password: hashPassword, email: 'danny@ggg.mail'}
 ]
 
+const subjectData = [
+    { title: 'HTML', description:'HTML5 : Writing a web page'},
+    { title: 'CSS', description:'CSS : Styling a web page'},
+    { title: 'JS', description:'JS : Interactive web page'},
+]
+
 console.log('Seed...')
 
-prisma.teacher.createMany({data : teacherData})
-.then(console.log)
+async function run() {
+    await prisma.teacher.createMany({data: teacherData})
+    await prisma.subject.createMany({data: subjectData})
+}
+
+run()
+
+
 

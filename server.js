@@ -3,13 +3,14 @@ const express = require('express')
 const cors = require('cors')
 const notFound = require('./middlewares/notFound')
 const error = require('./middlewares/error')
+const authRoute = require('./routes/auth-route')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-app.use('/',(req,res)=> res.status(200).json({msg: 'OK Server up'}))
+app.use('/auth', authRoute)
 
 app.use(notFound)
 app.use(error)

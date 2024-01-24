@@ -13,7 +13,7 @@ datasource db {
 model Teacher {
   id            Int       @id @default(autoincrement())
   firstname     String    @db.VarChar(30)
-  t_code        String    @db.VarChar(4)
+  t_code        String    @db.VarChar(4) @unique
   password      String    @db.VarChar(72)
   email         String?   @db.VarChar(99)
   homeworks     Homework[]
@@ -31,6 +31,7 @@ model Homework {
   subject       Subject   @relation(fields: [subject_id], references: [id])
   subject_id    Int   
   question      String    @db.Text
+  imgUrl        String?   @map("img_url")
   startdate     DateTime  @db.Date
   duedate       DateTime  @db.Date
   published     Boolean
@@ -42,7 +43,7 @@ model Homework {
 model Answer {
   id            Int       @id @default(autoincrement())
   answer_text   String?   @db.Text
-  score         Decimal?  @db.Decimal(3,1)
+  score         Float?    @db.Float
   submitted     Boolean   
   homeworks     Homework  @relation(fields: [homework_id], references: [id])
   homework_id   Int
@@ -53,7 +54,7 @@ model Answer {
 model Student {
   id            Int       @id @default(autoincrement())
   firstname     String    @db.VarChar(30)
-  s_code        String    @db.VarChar(4)
+  s_code        String    @db.VarChar(4) @unique
   password      String    @db.VarChar(72)
   email         String?   @db.VarChar(99) 
   answers       Answer[] 
