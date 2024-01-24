@@ -1,10 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken')
 const db = require("../models/db");
+const tryCatch = require('../utils/tryCatch')
 
-const tryCatch = func => {
-  return (req, res, next) => func(req, res, next).catch(next)
-}
 
 // exports.register = async (req, res, next) => {
 //   const { firstname, s_code, password, confirmPassword } = req.body;
@@ -28,7 +26,7 @@ const tryCatch = func => {
 // };
 
 exports.register = tryCatch( async (req, res, next) => {
-  const { firstname, s_code, password, confirmPassword } = req.body;
+  const { firstname, s_code, password, confirmPassword, email } = req.body;
     if (!(firstname && s_code && password && confirmPassword)) {
       throw new Error("fulfill the blank input");
     }
@@ -41,7 +39,7 @@ exports.register = tryCatch( async (req, res, next) => {
 
     const newStudent = await db.student.create({ data });
 
-    res.status(200).json(newStudent);
+    res.status(200).json({msg: s_code + ' Register successful'});
 })
 
 exports.login = tryCatch(async (req, res, next) => {
@@ -58,12 +56,17 @@ exports.login = tryCatch(async (req, res, next) => {
   if(!pwOk) {
     throw new Error('Password Incorrect')
   }
-  const payload = { id: result.id, s_code: result.s_code }
+  const payload = t_code 
+    ? { id: result.id, t_code: result.t_code }
+    : { id: result.id, s_code: result.s_code }
+
+  console.log(payload)
   const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30d'})
   
   res.json(token)
 });
 
 exports.me = tryCatch(async (req, res, next) => {
-  res.send("get my info");
+  const {password, ...me} = req.user
+  res.json(me);
 });
