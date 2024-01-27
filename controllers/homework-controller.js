@@ -13,6 +13,13 @@ exports.addNew = tryCatch( async (req,res,next) => {
       teacher_id : req.user.id
     }
   })
-
   res.json({result : rs})
 })
+
+exports.getByTeacher = tryCatch( async (req, res, next) => {
+  const homework = await db.homework.findMany( {
+    where : { teacher_id : req.user.id},
+    include : { subject : { select : { title: true } } }
+  })
+  res.json({homework})
+} )
