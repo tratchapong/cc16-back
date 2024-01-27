@@ -6,6 +6,7 @@ const error = require('./middlewares/error')
 const authRoute = require('./routes/auth-route')
 const authenticate = require('./middlewares/authenticate')
 const subjectRoute = require('./routes/subject-route')
+const homeworkRoute = require('./routes/homework-route')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use(express.json())
 
 app.use('/auth', authRoute)
 app.use('/subject', subjectRoute)
+app.use('/homework', homeworkRoute)
 
 app.use(notFound)
 app.use(error)
