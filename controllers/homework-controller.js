@@ -41,8 +41,12 @@ exports.update = tryCatch( async (req, res,next) =>{
       teacher_id : req.user.id
     }
   })
+  res.json({result: rs})
+})
+
+exports.delete = tryCatch( async (req,res,next) => {
+  const {id} = req.params
+  const rs = await db.homework.delete({where: { id : +id }})
 
   res.json({result: rs})
-
-
 } )

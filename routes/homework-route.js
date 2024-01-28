@@ -6,5 +6,6 @@ const authenticate = require('../middlewares/authenticate')
 router.get('/',authenticate, homeworkController.getByTeacher)
 router.post('/', authenticate ,homeworkController.addNew)
 router.put('/:id', authenticate, homeworkController.update)
+router.delete('/:id', authenticate, homeworkController.delete)
 
 module.exports = router
