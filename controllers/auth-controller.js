@@ -45,7 +45,7 @@ exports.register = tryCatch( async (req, res, next) => {
 exports.login = tryCatch(async (req, res, next) => {
   const {t_code, s_code, password} = req.body;
   console.log(req.body)
-  if(t_code && s_code ) {
+  if( (t_code && s_code) || (!t_code && !s_code)) {
     throw new Error('use teacher or student code')
   }
   const result = t_code 
@@ -60,7 +60,7 @@ exports.login = tryCatch(async (req, res, next) => {
     ? { id: result.id, t_code: result.t_code }
     : { id: result.id, s_code: result.s_code }
 
-  console.log(payload)
+  // console.log(payload)
   const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30d'})
   
   res.json(token)

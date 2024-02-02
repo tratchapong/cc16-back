@@ -5,7 +5,7 @@ const tryCatch = require('../utils/tryCatch')
 module.exports = tryCatch(async (req, res, next) => {
   // console.log(req.headers)
   const authorization = req.headers.authorization
-  if(!authorization || !authorization) {
+  if(!authorization || !(/^Bearer/i.test(authorization)) ) {
     return res.status(401).json({msg: 'Unauthorized'})
   }
   const token = authorization.split(' ')[1]
