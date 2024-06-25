@@ -45,6 +45,7 @@ model Answer {
   answer_text   String?   @db.Text
   score         Float?    @db.Float
   submitted     Boolean   
+  updatedAt     DateTime  @updatedAt @db.Timestamp(0) @map("updated_at")
   homeworks     Homework  @relation(fields: [homework_id], references: [id])
   homework_id   Int
   student       Student   @relation(fields: [student_id], references: [id])
@@ -57,5 +58,6 @@ model Student {
   s_code        String    @db.VarChar(4) @unique
   password      String    @db.VarChar(72)
   email         String?   @db.VarChar(99) 
+  createdAt     DateTime  @default(now()) @db.Timestamp(0) @map("created_at")
   answers       Answer[] 
 }
